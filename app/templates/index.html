@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} Employee Directory | Home {% endblock %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+    <h1>Hello {{ current_user.username }}, you have permission to edit and view your entries.</h1>
+{% else %}
+    <h1>Sign up or log in to use directory.</h1>
+{% endif %}
+
+
+{% for post in posts %}
+{% if current_user == post.author %}
+    <div class="card">
+        <a href="{{ url_for('view_single_post', post_id=post.id) }}">
+            <div class="card-header"> {{ post.title }}</div>
+        </a>
+        <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <p>{{ post.body }}</p>
+            <footer class="blockquote-footer">{{ post.author.username }}</footer>
+        </blockquote>
+        </div>
+  </div>
+{% endif %}
+{% endfor %}
+
+{% endblock %}
